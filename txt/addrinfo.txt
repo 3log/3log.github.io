@@ -1,0 +1,70 @@
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netdb.h>
+
+/* ======================Types of sockets====================== */
+enum __socket_type {
+    SOCK_STREAM = 1,        /* Sequenced, reliable, connection-based byte streams.  */
+    SOCK_DGRAM = 2,         /* Connectionless, unreliable datagrams of fixed maximum length.  */
+    SOCK_RAW = 3,           /* Raw protocol interface.  */
+    SOCK_RDM = 4,           /* Reliably-delivered messages.  */
+    SOCK_SEQPACKET = 5,     /* Sequenced, reliable, connection-based,datagrams of fixed maximum length.  */
+    SOCK_DCCP = 6,          /* Datagram Congestion Control Protocol.  */
+    SOCK_PACKET = 10,       /* Linux specific way of getting packets at the dev level.  For writing rarp and other similar things on the user level. */
+    
+    /* Flags to be ORed into the type parameter of socket and socketpair and used for the flags parameter of paccept.  */
+    SOCK_CLOEXEC =  02000000,   /* Atomically set close-on-exec flag for the new descriptor(s).  */
+    SOCK_NONBLOCK = 00004000    /* Atomically mark descriptor(s) as non-blocking.  */
+};
+
+/* ============Protocol families(只列出常用几个)================= */
+#define PF_UNSPEC       0   /* Unspecified.  */
+#define PF_LOCAL        1   /* Local to host (pipes and file-domain).  */
+#define PF_INET         2   /* IP protocol family.  */
+#define PF_IPX          4   /* Novell Internet Protocol.  */
+#define PF_APPLETALK    5   /* Appletalk DDP.  */
+#define PF_INET6        10  /* IP version 6.  */
+#define PF_TIPC         30  /* TIPC sockets.  */
+#define PF_BLUETOOTH    31  /* Bluetooth sockets.  */
+
+/* ==============Address families(只列出常用几个)================= */
+#define AF_UNSPEC   PF_UNSPEC
+#define AF_LOCAL    PF_LOCAL
+#define AF_UNIX     PF_UNIX
+#define AF_FILE     PF_FILE
+#define AF_INET     PF_INET
+#define AF_IPX      PF_IPX
+#define AF_APPLETALK    PF_APPLETALK
+#define AF_INET6    PF_INET6
+#define AF_ROSE     PF_ROSE
+#define AF_NETLINK  PF_NETLINK
+#define AF_TIPC     PF_TIPC
+#define AF_BLUETOOTH    PF_BLUETOOTH
+
+/* ====Possible values for `ai_flags' field in `addrinfo' structure.===== */
+#define AI_PASSIVE        0x0001  /* Socket address is intended for `bind'. */
+#define AI_CANONNAME      0x0002  /* Request for canonical name. */
+#define AI_NUMERICHOST    0x0004  /* Don't use name resolution. */
+#define AI_V4MAPPED       0x0008  /* IPv4 mapped addresses are acceptable. */
+#define AI_ALL            0x0010  /* Return IPv4 mapped and IPv6 addresses. */
+#define AI_ADDRCONFIG     0x0020  /* Use configuration of this host to choose returned address type. */
+#ifdef __USE_GNU
+#define AI_IDN                      0x0040  /* IDN encode input (assuming it is encoded
+                  in the current locale's character set) before looking it up. */
+#define AI_CANONIDN                 0x0080  /* Translate canonical name from IDN format. */
+#define AI_IDN_ALLOW_UNASSIGNED     0x0100 /* Don't reject unassigned Unicode code points. */
+#define AI_IDN_USE_STD3_ASCII_RULES 0x0200 /* Validate strings according to STD3 rules. */
+#endif
+#define AI_NUMERICSERV              0x0400  /* Don't use name resolution.  */
+
+/* =======================struct addrinfo======================= */
+struct addrinfo {
+int ai_flags;              /* 附加选项,多个选项可以使用或操作结合 */
+int ai_family;             /* 指定返回地址的协议簇,取值范围:AF_INET(IPv4)、AF_INET6(IPv6)、AF_UNSPEC(IPv4 and IPv6) */ 
+int ai_socktype;           /* enum __socket_type 类型，设置为0表示任意类型 */
+int ai_protocol;           /* 协议类型，设置为0表示任意类型,具体见上一节的 Ip Protocol */
+socklen_t ai_addrlen;      /* socket address 的长度 */
+struct sockaddr *ai_addr;  /* socket address 的地址 */
+char *ai_canonname;        /* Canonical name of service location. */
+struct addrinfo *ai_next;  /* 指向下一条信息,因为可能返回多个地址 */
+};

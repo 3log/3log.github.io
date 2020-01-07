@@ -1,0 +1,89 @@
+
+/* Protocols */
+
+#define IPPROTO_IP      0   /* dummy for IP */
+#define IPPROTO_ICMP    1   /* control message protocol */
+#define IPPROTO_IGMP    2   /* internet group management protocol */
+#define IPPROTO_GGP     3   /* gateway^2 (deprecated) */
+#define IPPROTO_TCP     6   /* tcp */
+#define IPPROTO_PUP     12  /* pup */
+#define IPPROTO_UDP     17  /* user datagram protocol */
+#define IPPROTO_IDP     22  /* xns idp */
+#define IPPROTO_ND      77  /* UNOFFICIAL net disk proto */
+#define IPPROTO_RAW     255 /* raw IP packet */
+#define IPPROTO_MAX     256
+
+IPv6单播地址有以下六种类型：
+
+1－Aggregate Global Unicast Address   2xxx:xxxxx/3 - 3FFF: :FFFF
+                                      2001::/16  IPV6因特网地址
+                                      2002::/16  6to4过渡地址
+2－Link Local Address　　　           FE80::/10   (前10位以FE80开头)
+3－Site Local Address (Private)       FEC0::/10
+4－Unspecified Address　　            0:0:0:0:0:0:0:0/128 => ::/128
+5－Loopback Address 　　　            0:0:0:0:0:0:0:1/128 => ::1/128
+6－IPv4 Compatible Address            ::192.168.30.1 => ::C0A8:1E01
+
+
+struct ether_addr 
+{
+    uint8_t addr_bytes[6]; /**< Address bytes in transmission order */
+};
+
+struct ether_hdr 
+{
+    struct ether_addr d_addr; /**< Destination address. */
+    struct ether_addr s_addr; /**< Source address. */
+    uint16_t ether_type;      /**< Frame type. */
+};
+
+struct vlan_hdr
+{
+    uint16_t vlan_tci;
+    uint16_t eth_proto;
+};
+
+struct ipv4_hdr 
+{
+    uint8_t  version_ihl;       /**< version and header length */
+    uint8_t  type_of_service;   /**< type of service */
+    uint16_t total_length;      /**< length of packet */
+    uint16_t packet_id;         /**< packet ID */
+    uint16_t fragment_offset;   /**< fragmentation offset */
+    uint8_t  time_to_live;      /**< time to live */
+    uint8_t  next_proto_id;     /**< protocol ID */
+    uint16_t hdr_checksum;      /**< header checksum */
+    uint32_t src_addr;          /**< source address */
+    uint32_t dst_addr;          /**< destination address */
+};
+
+struct ipv6_hdr 
+{
+    uint32_t vtc_flow;     /**< IP version, traffic class & flow label. */
+    uint16_t payload_len;  /**< IP packet length - includes sizeof(ip_header). */
+    uint8_t  proto;        /**< Protocol, next header. */
+    uint8_t  hop_limits;   /**< Hop limits. */
+    uint8_t  src_addr[16]; /**< IP address of source host. */
+    uint8_t  dst_addr[16]; /**< IP address of destination host(s). */
+};
+
+struct tcp_hdr 
+{
+    uint16_t src_port;  /**< TCP source port. */
+    uint16_t dst_port;  /**< TCP destination port. */
+    uint32_t sent_seq;  /**< TX data sequence number. */
+    uint32_t recv_ack;  /**< RX data acknowledgement sequence number. */
+    uint8_t  data_off;  /**< Data offset. */
+    uint8_t  tcp_flags; /**< TCP flags */
+    uint16_t rx_win;    /**< RX flow control window. */
+    uint16_t cksum;     /**< TCP checksum. */
+    uint16_t tcp_urp;   /**< TCP urgent pointer, if any. */
+};
+
+struct udp_hdr 
+{
+    uint16_t src_port;    /**< UDP source port. */
+    uint16_t dst_port;    /**< UDP destination port. */
+    uint16_t dgram_len;   /**< UDP datagram length */
+    uint16_t dgram_cksum; /**< UDP datagram checksum */
+};

@@ -6,7 +6,7 @@
 </head>
 <body>
 <?php
-$dir = "/";
+$dir = "txt/";
 
 // 打开目录，然后读取其内容
 if (is_dir($dir))
@@ -14,10 +14,11 @@ if (is_dir($dir))
   if ($dh = opendir($dir))
   {
     while (($file = readdir($dh)) !== false)
-	{
-		echo "filename:" . $file . "<br>";
+    {
+	echo "filename:" . $file .;
+	echo "<a href='".$file."'>".$file."</a>";
     }
-	closedir($dh);
+    closedir($dh);
   }
 }
 ?>

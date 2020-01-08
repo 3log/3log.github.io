@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>title</title>
+</head>
+<body>
+<?php
+$d=opendir('./1/');
+while($file=readdir($d)){
+    if(is_file($file)) {
+        $strFile = substr($file,-3);
+        if($strFile == 'txt') {
+            echo "<a href='".$file."'>".$file."</a><br />";
+        }
+    }
+}
+closedir($d);
+?>
+</body>
+</html>

@@ -6,7 +6,7 @@
 </head>
 <body>
 <?php
-$d=opendir('1/');
+$d=opendir('txt/');
 while($file=readdir($d)){
     if(is_file($file)) {
         $strFile = substr($file,-3);

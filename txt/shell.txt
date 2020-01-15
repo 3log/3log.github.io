@@ -37,3 +37,16 @@ if [ "${aa}" = "${bb}" ]; then
 else
  echo "${aa} not equal ${bb}"
 fi
+
+#读取配置文件
+config_path="/config/config"
+input_eth=`awk -F'=' '/input_eth/{print $2}' ${config_path}`
+
+#字符串逗号分隔
+array_eth=(${input_eth//,/ })
+eth_count=${#array_eth[@]}
+echo "eth count="${eth_count}
+for eth in ${array_eth[@]}
+do
+   echo "${eth}"
+done

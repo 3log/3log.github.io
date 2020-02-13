@@ -1,4 +1,13 @@
 
+$? 判断if语句的上一个命令执行结果, 如果成功就是0，失败为1.
+例如:
+/sbin/lsmod | grep -s igb_uio > /dev/null
+if [ $? -eq 0 ] ; then
+	echo "exist"
+else
+	echo "not exist"
+fi
+
 #获取系统信息
 str_system_version=`cat /etc/issue`
 echo "$str_system_version"
